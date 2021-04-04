@@ -7,10 +7,9 @@ class Celeste {
   int ypos;
   int vx;
   int vy;
-  int a;
   int floor;
-  float dt;
   boolean jumping;
+  //TODO walls
   
   Celeste(int x, int y) {
     xpos = x;
@@ -19,8 +18,6 @@ class Celeste {
     ypos = floor - 108;
     vx = 0;
     vy = 0;
-    a = 0;
-    dt = 1/frameRate;
     atRest = true; //change later after implementing moving
     for (int i = 0; i < 9; i++) {
       celeste_r[i] = loadImage( "celeste_right/Celeste_r0"+ (i+1)+".png");
@@ -62,6 +59,9 @@ class Celeste {
     xpos = x;
     ypos = floor - 108;
   }
+  void set_floor(int y) {
+    floor = y;
+  }
   void moveLeft() {
     dir = false;
     vx = -8;
@@ -79,4 +79,18 @@ class Celeste {
   void stop() {
     vx = 0;
   }
+  void trampoline_jump() {
+    if(!jumping) {
+      vy = -40;
+      jumping = true;
+    }
+  }
+  
+  int getX() {
+    return xpos+75;
+  }
+  int getY() {
+    return ypos+75;
+  }
+
 }

@@ -1,9 +1,8 @@
 
 class ball {
   boolean switch_;
-  int x;
-  int y;
-  ball(int xp, int yp) {
+  float x, y;
+  ball(float xp, float yp) {
     switch_ = false;
     x = xp;
     y = yp;
@@ -16,11 +15,13 @@ class ball {
       image(fire_ball, x, y);
     }
   }
-  void flip_switch() {
-    switch_ = !switch_;
+  void flip_switch(boolean s) {
+    switch_ = s;
   }
-  void move(int xp, int yp) {
+  void move(float xp, float yp) {
     x = xp;
     y = yp;
   }
+  float getX(){return x+75;}//return center
+  float getY(){return y+75;}//return center
 }

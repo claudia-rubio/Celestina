@@ -27,39 +27,47 @@ PImage fire_ball;
 PImage trampoline;
 SoundFile glass_break;
 SoundFile music;
+//SoundFile died;
+tutorial_land tutorial;
 
 void setup() {
   
   size(1800, 1400);
   cel = new Celeste(600, 600);
   background = new Background();
+  
   frameRate(20);
   start = true;
   second_screen = false;
   
   //These images are initiated here once because they'll be used over and over again
-  ice = loadImage("ice_cube.png");
+  
   spike = loadImage("spike.png");
+  spike.resize(0, 75);
   ice_ball = loadImage("ice_ball.png");
   fire_ball = loadImage("fire_ball.png");
+  fire_ball.resize(0, 150);
+  ice_ball.resize(0, 150);
+ 
   trampoline = loadImage("trampoline.png");
   
   glass_break = new SoundFile(this, "Minecraft Glass Break.mp3");
   music = new SoundFile(this, "Celeste_Sound_track.mp3");
-  spike.resize(0, 200);
+  //died = new SoundFile(this, "Spongebob Disappointed.mp3");
+  //spike.resize(0, 150);
   level = -1;
   pos_set = false;
 
-
-  strokeWeight(10);
+  tutorial = new tutorial_land();
+  strokeWeight(7);
   rectMode(CENTER);
   textAlign(CENTER);
   textSize(40);
 }
+
 void draw() {
   background(255);
   background.display(level);
-
   if(!music.isPlaying())
     music.play();
     
@@ -82,24 +90,33 @@ void draw() {
     rect(2*width/3, 400, 300, 300);
     rect(width/3, 800, 300, 300); 
     rect(2*width/3, 800, 300, 300);
+    rect(width/2, 1200, 600, 120);
+    
     
     fill(0);
     text("TUTORIAL", width/3, 400);
     text("Level 1", 2*width/3, 400, 300);
     text("Level 2", width/3, 800);
     text("Level 3", 2*width/3, 800);
+    text("EXIT", width/2, 1200);
   }
   
   //level 0 (tutorial level)
   if(level == 0) {
-    tutorial_land tutorial = new tutorial_land();
+    tutorial.move();
+    tutorial.display();
     if(!pos_set) {
-      cel.set_position(150, 1400-96*3);
+      cel.set_position(100, 1400-335);
       pos_set = true;
     }
     cel.display();
   }
-  
+  if(level >= 0){
+    fill(255);
+    rect(200, 100, 250, 75);
+    fill(0);
+    text("GO BACK", 200, 115);
+  }
   //TODO call level 1 thoguh 3
   
 }
@@ -112,7 +129,7 @@ void mouseClicked() {
     start = false;
     second_screen = true;
   }
-  if(mouseX <= width/2+300 && mouseX >= width/2-300 && mouseY <= 1200 + 60 && mouseY >= 1200 - 60 && start) {
+  if(mouseX <= width/2+300 && mouseX >= width/2-300 && mouseY <= 1200 + 60 && mouseY >= 1200 - 60 && (start || second_screen)) {
     glass_break.play();
     exit();
   }
@@ -127,12 +144,19 @@ void mouseClicked() {
     }
   }
   
+  //when someone clicks go back
+  if(level >= 0) {
+    if(mouseX <= 200 + 125 && mouseX >= 200 - 125 && mouseY <= 100 + 37.5 && mouseY >= 100 -37.5) {
+      level = -1;
+      second_screen = true;
+      glass_break.play();
+      pos_set = false;
+    }
+  }
   
   //Other buttons haven't been implemented yet. TODO
   
-  //on each level. Check "Go back Buttons" TODO
-  //Go back butoons will take back to the second screen where the player can decide what to do
-  //and see their collectables/completed levels
+  //TODO: see their collectables/completed levels
   //TODO: add exit button to second screen 
 }
 
