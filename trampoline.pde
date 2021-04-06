@@ -7,10 +7,23 @@ class trampoline {
     y = yp;
   }
   void display() {
-    image(trampoline, x, y);
+    image(trampoline, x, y);  
   }
+  int getX() {return x;}
+  int getY() {return y;}
+  
   void fall_down() {
     y+= 2;
+  }
+  boolean On() {
+    //bounce
+    if(cel.getX() > getX() && cel.getX() < getX()+96 && cel.getY() <= getY()) {
+      cel.set_floor(getY());
+      cel.trampoline_jump();
+      return true;
+    }
+    else 
+    return false;
   }
   
 }

@@ -14,7 +14,7 @@ class ball {
     else {
       image(fire_ball, x, y);
     }
-  }
+  }  
   void flip_switch(boolean s) {
     switch_ = s;
   }
@@ -22,6 +22,17 @@ class ball {
     x = xp;
     y = yp;
   }
+  
   float getX(){return x+75;}//return center
   float getY(){return y+75;}//return center
+  
+  boolean On() {
+    if(switch_ && cel.getX() > getX()-75 && cel.getX() < getX()+75 && cel.getY() <= getY()-65){
+        cel.set_floor((int)getY() -75);
+        cel.bounce();
+        return true;
+    }
+    return false;
+  }
+      
 }

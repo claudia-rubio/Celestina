@@ -8,6 +8,7 @@ class Celeste {
   int vx;
   int vy;
   int floor;
+  int default_floor;
   boolean jumping;
   //TODO walls
   
@@ -58,6 +59,7 @@ class Celeste {
     floor = y;
     xpos = x;
     ypos = floor - 108;
+    default_floor = y;
   }
   void set_floor(int y) {
     floor = y;
@@ -82,6 +84,12 @@ class Celeste {
   void trampoline_jump() {
     if(!jumping) {
       vy = -40;
+      jumping = true;
+    }
+  }
+  void bounce() {
+    if(!jumping) {
+      vy = -28;
       jumping = true;
     }
   }

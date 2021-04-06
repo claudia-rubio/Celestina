@@ -50,7 +50,6 @@ void setup() {
   ice_ball.resize(0, 150);
  
   trampoline = loadImage("trampoline.png");
-  
   glass_break = new SoundFile(this, "Minecraft Glass Break.mp3");
   music = new SoundFile(this, "Celeste_Sound_track.mp3");
   //died = new SoundFile(this, "Spongebob Disappointed.mp3");
