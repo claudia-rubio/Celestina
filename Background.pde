@@ -1,7 +1,11 @@
+  //-------------finished -----------------------
   class Background {
     
     PImage[] background;
     PImage level_0;
+    PImage level_1;
+    PImage level_2;
+    PImage level_3;
     
     Background() {
       background = new PImage[16];
@@ -15,6 +19,12 @@
       }
       level_0 = loadImage("background/level_0.png");
       level_0.resize(1800, 1400);
+      level_1 = loadImage("background/level_1.png");
+      level_1.resize(1800, 1400);
+      level_2 = loadImage("background/level_2.png");
+      level_2.resize(1800, 1400);
+      level_3 = loadImage("background/level_3.png");
+      level_3.resize(1800, 1400);
     }
     
 
@@ -28,9 +38,21 @@
         image(level_0, 0, 0);
         noTint();
       }
-      
-      //TODO level 1-3 background if-statements
-      
+      if(level == 1) { 
+        tint(255, 200);
+        image(level_1, 0, 0);
+        noTint();
+      }
+      if(level == 2) { 
+        tint(255, 150);
+        image(level_2, 0, 0);
+        noTint();
+      }
+      if(level == 3) { 
+        tint(255, 150);
+        image(level_3, 0, 0);
+        noTint();
+      }
     }
   
   }

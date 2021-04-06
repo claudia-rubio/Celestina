@@ -12,5 +12,9 @@ class Spike {
   
   void display() {
     image(spike, x, y);
+    if(dist(getX(), getY(), cel.getX(), cel.getY()) < 53) {
+      cel.die();
+    }
   }
+  
 }

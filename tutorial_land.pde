@@ -9,10 +9,9 @@ class tutorial_land {
   float xb1, yb1;
   float angle;
   boolean s;
+  boolean once;
   platform w1;
-  boolean floor_s;
-
-  
+ 
   tutorial_land() { //<>//
     
     sp1 = new Spike(250, 1400 - 400);
@@ -20,7 +19,7 @@ class tutorial_land {
     sp3 = new Spike(450, 1400 - 400);
     sp4 = new Spike(450, 1400 - 470);
     
-    w1 = new platform(550, 700, 300, #CE0404);
+    w1 = new platform(510, 700, 200, #CE0404);
 
     tr = new trampoline(1300, 850);
     angle = 0;
@@ -29,7 +28,7 @@ class tutorial_land {
     yb1 = 800+150*sin(angle);
     b1 = new ball(xb1, yb1);
     s = true;
-    floor_s = false;
+    once = true;
   }
   void move() { //move objects here
     angle+=0.05;
@@ -52,38 +51,23 @@ class tutorial_land {
     if(!tr.On() && !b1.On() && !w1.On()) {
       cel.set_floor(cel.default_floor);
     }
+      
+    fill(#FEFF36);
+    ellipse(1100, 800, 60, 60);
+    fill(0);
+    text("s", 1100, 800);
     
-    //die due to spikes
-    if(dist(sp1.getX(), sp1.getY(), cel.getX(), cel.getY()) < 53
-    ||dist(sp2.getX(), sp2.getY(), cel.getX(), cel.getY()) < 53
-    ||dist(sp3.getX(), sp3.getY(), cel.getX(), cel.getY()) < 53
-    ||dist(sp4.getX(), sp4.getY(), cel.getX(), cel.getY()) < 53) {
-      glass_break.play();
-      cel.set_position(100, 1400-335);
-      b1.flip_switch(false);
-      s = true;
-    }
-   
-    if(s) {
-      if(dist(b1.getX(), b1.getY(), cel.getX(), cel.getY()) < 65) {
+ 
+    if(dist(cel.getX(), cel.getY(), 1100, 800) < 60){
+      if(once) {
+        b1.flip_switch(s);
+        s = !s;
+        once = false;
         glass_break.play();
-        cel.set_position(100, 1400-335);
-        b1.flip_switch(false);
-      }
-      
-      fill(#FEFF36);
-      ellipse(1100, 800, 60, 60);
-      fill(0);
-      text("s", 1100, 800);
-      
-      if(dist(cel.getX(), cel.getY(), 1100, 800) < 60){
-        b1.flip_switch(true);
-        glass_break.play();
-        s = false;
       }
     }
-    
-
+    if(!cel.jumping) 
+      once = true;
 
     //TODO add flag and winning condition
   }

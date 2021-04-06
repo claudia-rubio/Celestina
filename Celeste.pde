@@ -9,6 +9,7 @@ class Celeste {
   int vy;
   int floor;
   int default_floor;
+  int x0, y0;
   boolean jumping;
   //TODO walls
   
@@ -17,6 +18,8 @@ class Celeste {
     jumping = false;
     floor = y;
     ypos = floor - 108;
+    x0 = xpos;
+    y0 = ypos;
     vx = 0;
     vy = 0;
     atRest = true; //change later after implementing moving
@@ -60,6 +63,8 @@ class Celeste {
     xpos = x;
     ypos = floor - 108;
     default_floor = y;
+    x0 = x;
+    y0 = y;
   }
   void set_floor(int y) {
     floor = y;
@@ -92,6 +97,12 @@ class Celeste {
       vy = -28;
       jumping = true;
     }
+  }
+  void die() {
+    glass_break.play();
+    xpos = x0;
+    ypos = y0;
+    floor = default_floor;
   }
   
   int getX() {

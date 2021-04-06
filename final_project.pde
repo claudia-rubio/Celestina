@@ -29,6 +29,9 @@ SoundFile glass_break;
 SoundFile music;
 //SoundFile died;
 tutorial_land tutorial;
+level_1 lev1;
+level_2 lev2;
+level_3 lev3;
 
 void setup() {
   
@@ -58,6 +61,10 @@ void setup() {
   pos_set = false;
 
   tutorial = new tutorial_land();
+  lev1 = new level_1();
+  lev2 = new level_2();
+  lev3 = new level_3();
+  
   strokeWeight(7);
   rectMode(CENTER);
   textAlign(CENTER);
@@ -91,7 +98,6 @@ void draw() {
     rect(2*width/3, 800, 300, 300);
     rect(width/2, 1200, 600, 120);
     
-    
     fill(0);
     text("TUTORIAL", width/3, 400);
     text("Level 1", 2*width/3, 400, 300);
@@ -110,13 +116,37 @@ void draw() {
     }
     cel.display();
   }
+  else if(level == 1) {
+    lev1.display();
+    if(!pos_set) {
+      cel.set_position(100, 1400-335);
+      pos_set = true;
+    }
+    cel.display();
+  }
+  else if(level == 2) {
+    lev2.display();
+    if(!pos_set) {
+      cel.set_position(100, 1400-335);
+      pos_set = true;
+    }
+    cel.display();
+  }
+  else if(level == 3) {
+    lev3.display();
+    if(!pos_set) {
+      cel.set_position(100, 1400-335);
+      pos_set = true;
+    }
+    cel.display();
+  }
+  
   if(level >= 0){
     fill(255);
     rect(200, 100, 250, 75);
     fill(0);
     text("GO BACK", 200, 115);
   }
-  //TODO call level 1 thoguh 3
   
 }
 
@@ -128,21 +158,43 @@ void mouseClicked() {
     start = false;
     second_screen = true;
   }
+  
+  //Exit buttons on both screens
   if(mouseX <= width/2+300 && mouseX >= width/2-300 && mouseY <= 1200 + 60 && mouseY >= 1200 - 60 && (start || second_screen)) {
     glass_break.play();
     exit();
   }
     
-   //second screen buttons:
+ //second screen buttons:
    //Button 1
   if (second_screen) {
+    //tutorial button
     if(mouseX <= width/3 + 150 && mouseX >= width/3 - 150 && mouseY <= 400 + 150 && mouseY >= 400 -150) {
       glass_break.play();
       level = 0;
       second_screen = false;
     }
+    //level 1 button
+    if(mouseX <= 2*width/3 + 150 && mouseX >= 2*width/3 - 150 && mouseY <= 400 + 150 && mouseY >= 400 -150) {
+      glass_break.play();
+      level = 1;
+      second_screen = false;
+    }
+    
+    //level 2 button
+    if(mouseX <= width/3 + 150 && mouseX >= width/3 - 150 && mouseY <= 800 + 150 && mouseY >= 800 -150) {
+      glass_break.play();
+      level = 2;
+      second_screen = false;
+    }
+    
+    //level 3 butoon
+    if(mouseX <= 2*width/3 + 150 && mouseX >= 2*width/3 - 150 && mouseY <= 800 + 150 && mouseY >= 800 -150) {
+      glass_break.play();
+      level = 3;
+      second_screen = false;
+    }
   }
-  
   //when someone clicks go back
   if(level >= 0) {
     if(mouseX <= 200 + 125 && mouseX >= 200 - 125 && mouseY <= 100 + 37.5 && mouseY >= 100 -37.5) {
@@ -152,11 +204,8 @@ void mouseClicked() {
       pos_set = false;
     }
   }
-  
-  //Other buttons haven't been implemented yet. TODO
-  
+
   //TODO: see their collectables/completed levels
-  //TODO: add exit button to second screen 
 }
 
 void keyPressed() {

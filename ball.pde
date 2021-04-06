@@ -13,6 +13,9 @@ class ball {
     }
     else {
       image(fire_ball, x, y);
+      if(dist(getX(), getY(), cel.getX(), cel.getY()) < 65) {
+        cel.die();
+      }
     }
   }  
   void flip_switch(boolean s) {
@@ -28,7 +31,7 @@ class ball {
   
   boolean On() {
     if(switch_ && cel.getX() > getX()-75 && cel.getX() < getX()+75 && cel.getY() <= getY()-65){
-        cel.set_floor((int)getY() -75);
+        cel.set_floor((int)getY() -58);
         cel.bounce();
         return true;
     }
