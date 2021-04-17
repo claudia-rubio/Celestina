@@ -1,3 +1,3 @@
 # Celestina  
-A game for a project in an animation class at UF  
+A platformer game inspired by the game Celeste  
 https://www.youtube.com/watch?v=G7gN3IHFpNg  
