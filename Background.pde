@@ -1,4 +1,4 @@
-  //-------------finished -----------------------
+
   class Background {
     
     PImage[] background;
@@ -8,6 +8,7 @@
     PImage level_3;
     
     Background() {
+      //this object is called in the setup 
       background = new PImage[16];
       for(int i = 0; i < 10; i++) {
         background[i] = loadImage("background/background0" + i+".png");
@@ -34,22 +35,25 @@
         image(background[frameCount%16], 0, 0);
       //tutorial level background
       if(level == 0) {
-        tint(255, 80);
+        tint(255, 150);
         image(level_0, 0, 0);
         noTint();
       }
+      //level 1
       if(level == 1) { 
-        tint(255, 200);
+        tint(255, 155);
         image(level_1, 0, 0);
         noTint();
       }
+      //level 2
       if(level == 2) { 
-        tint(255, 150);
+        tint(255, 175);
         image(level_2, 0, 0);
         noTint();
       }
+      //level 3
       if(level == 3) { 
-        tint(255, 150);
+        tint(255, 175);
         image(level_3, 0, 0);
         noTint();
       }

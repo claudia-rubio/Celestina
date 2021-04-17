@@ -28,6 +28,7 @@ class platform {
     rect(x, y, w, 30);
 
   }
+  //check whether the floor needs to be updated to the platform if Celestina is over it
   boolean On() {
     if(cel.getX() > getX_l() && cel.getX() < getX_r() && cel.getY() <= getY()) {
       cel.set_floor(getY());

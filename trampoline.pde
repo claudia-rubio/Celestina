@@ -15,6 +15,7 @@ class trampoline {
   void fall_down() {
     y+= 2;
   }
+  //trampoline jump is Celestin falls on trampolie
   boolean On() {
     //bounce
     if(cel.getX() > getX() && cel.getX() < getX()+96 && cel.getY() <= getY()) {

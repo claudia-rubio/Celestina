@@ -1,16 +1,10 @@
+
 import processing.sound.*;
 
 /*
 Claudia Rubio
-
-The name of the game is "Celestina"
-it is a platformer game based on the game Celeste
-although this one won't be as great
-
-To get a feel of what's been done so far:
-on the menu click start, then tutorial,
-you'll be taken to the tutorial level that hasn't been fully implemented.
-You can use the left, right key and the space bar to move the character around.
+Celestina
+All levels are beatable and all strawberies are attainable without dying
 */
 
 
@@ -20,14 +14,21 @@ boolean start;
 boolean second_screen;
 boolean pos_set;
 int level;
-PImage ice;
 PImage spike;
 PImage ice_ball;
 PImage fire_ball;
 PImage trampoline;
+PImage s_on;
+PImage s_off;
+PImage flag;
+PImage strawberry;
+PImage postcard;
+
 SoundFile glass_break;
 SoundFile music;
-//SoundFile died;
+boolean completed[];
+int won;
+
 tutorial_land tutorial;
 level_1 lev1;
 level_2 lev2;
@@ -42,24 +43,30 @@ void setup() {
   frameRate(20);
   start = true;
   second_screen = false;
-  
-  //These images are initiated here once because they'll be used over and over again
-  
+  //load all the data
   spike = loadImage("spike.png");
   spike.resize(0, 75);
   ice_ball = loadImage("ice_ball.png");
   fire_ball = loadImage("fire_ball.png");
   fire_ball.resize(0, 150);
   ice_ball.resize(0, 150);
- 
   trampoline = loadImage("trampoline.png");
+  s_on = loadImage("s_on.png");
+  s_off = loadImage("s_off.png");
+  flag = loadImage("flag.png");
+  strawberry = loadImage("strawberry.png");
+  strawberry.resize(0, 75);
+  postcard = loadImage("postcard.PNG");
+  postcard.resize(0, 450);
+
   glass_break = new SoundFile(this, "Minecraft Glass Break.mp3");
   music = new SoundFile(this, "Celeste_Sound_track.mp3");
-  //died = new SoundFile(this, "Spongebob Disappointed.mp3");
-  //spike.resize(0, 150);
+  
   level = -1;
   pos_set = false;
-
+  completed = new boolean[4];
+  won = -1;
+  
   tutorial = new tutorial_land();
   lev1 = new level_1();
   lev2 = new level_2();
@@ -104,44 +111,71 @@ void draw() {
     text("Level 2", width/3, 800);
     text("Level 3", 2*width/3, 800);
     text("EXIT", width/2, 1200);
+    
+    if(completed[0] == true){
+      image(flag, width/3, 450);
+    }
+    if(completed[1] == true){
+      image(flag, 2*width/3, 450);
+    }
+    if(completed[2] == true){
+      image(flag, width/3, 850);
+    }
+    if(completed[3] == true){
+      image(flag, 2*width/3, 850);
+    }
+    fill(0);
+    image(strawberry, 120, 50);
+    text(": " + cel.strawberries + "/4", 250, 100);
+    text("Deaths:  " + cel.deaths, 600, 100);
   }
   
+  //wining level screen
+  if(won != -1) {
+    winLevel(won);
+  }
   //level 0 (tutorial level)
-  if(level == 0) {
+  else if(level == 0) {
+    if(!pos_set) {
+      cel.set_position(100, 1400-335);
+      pos_set = true;
+    }
     tutorial.move();
     tutorial.display();
-    if(!pos_set) {
-      cel.set_position(100, 1400-335);
-      pos_set = true;
-    }
     cel.display();
   }
+  //Level 1
   else if(level == 1) {
+    if(!pos_set) {
+      cel.set_position(100, 1400-355);
+      pos_set = true;
+    }
+    lev1.move();
     lev1.display();
-    if(!pos_set) {
-      cel.set_position(100, 1400-335);
-      pos_set = true;
-    }
     cel.display();
   }
+  //Level 2
   else if(level == 2) {
+    if(!pos_set) {
+      cel.set_position(100, 1400-400);
+      pos_set = true;
+    }
+    lev2.move();
     lev2.display();
-    if(!pos_set) {
-      cel.set_position(100, 1400-335);
-      pos_set = true;
-    }
     cel.display();
   }
+  //Level 3
   else if(level == 3) {
-    lev3.display();
     if(!pos_set) {
-      cel.set_position(100, 1400-335);
+      cel.set_position(100, 1400-240);
       pos_set = true;
     }
+    lev3.move();
+    lev3.display();
     cel.display();
   }
-  
-  if(level >= 0){
+  //Go back button in all levels
+  if(level >= 0 && won == -1){
     fill(255);
     rect(200, 100, 250, 75);
     fill(0);
@@ -150,6 +184,26 @@ void draw() {
   
 }
 
+//this function draws the screen that appears when the player beaths a level
+void winLevel(int level) {
+  fill(0);
+  rect(width/2, height/2, width, height);
+  fill(255);
+  textSize(80);
+  image(flag, width/2 - 50, height/2-300);
+  text("CONGRATULATIONS!\n Level " + level + " completed", width/2, height/2-100);
+  rect(width/2, 1050, 500, 100);
+  if(level != 3)
+    rect(width/2, 1200, 500, 100);
+  fill(0);
+  textSize(40);
+  text("GO BACK", width/2, 1065);
+  if(level != 3)
+    text("NEXT LEVEL", width/2, 1215);
+      
+}
+
+//Handle events and user interface
 void mouseClicked() {
 
   //Starting screen buttons:
@@ -166,7 +220,6 @@ void mouseClicked() {
   }
     
  //second screen buttons:
-   //Button 1
   if (second_screen) {
     //tutorial button
     if(mouseX <= width/3 + 150 && mouseX >= width/3 - 150 && mouseY <= 400 + 150 && mouseY >= 400 -150) {
@@ -196,7 +249,7 @@ void mouseClicked() {
     }
   }
   //when someone clicks go back
-  if(level >= 0) {
+  if(level >= 0 && won == -1) {
     if(mouseX <= 200 + 125 && mouseX >= 200 - 125 && mouseY <= 100 + 37.5 && mouseY >= 100 -37.5) {
       level = -1;
       second_screen = true;
@@ -204,12 +257,28 @@ void mouseClicked() {
       pos_set = false;
     }
   }
-
-  //TODO: see their collectables/completed levels
+  //when on winning screen
+  if(won > -1) {
+    //go back button
+    if(mouseX <= width/2 + 250 && mouseX >= width/2 -250 && mouseY <= 1050 + 50 && mouseY >= 1050-50) {
+      level = -1;
+      second_screen = true;
+      glass_break.play();
+      pos_set = false;
+      won = -1;
+    }
+    //next level button
+    else if(won != 3 && mouseX <= width/2 + 250 && mouseX >= width/2-250 && mouseY <=1200+50 && mouseY >=1200-50) {
+      level = won+1;
+      glass_break.play();
+      pos_set = false;
+      won = -1;
+    }
+  }
 }
 
+//Handle key presses that move Celestina
 void keyPressed() {
-  
     if(keyCode == LEFT) 
       cel.moveLeft();
     if(keyCode == RIGHT)
@@ -217,6 +286,7 @@ void keyPressed() {
     if(keyCode == ' ') 
       cel.jump();
 }
+//Stop moving left or right when the arrow keys are not pressed
 void keyReleased() {
   if(keyCode == LEFT || keyCode == RIGHT)
     cel.stop();

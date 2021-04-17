@@ -11,8 +11,10 @@ class Celeste {
   int default_floor;
   int x0, y0;
   boolean jumping;
-  //TODO walls
+  int strawberries;
+  int deaths;
   
+  //Constructor, called from setup
   Celeste(int x, int y) {
     xpos = x;
     jumping = false;
@@ -22,7 +24,8 @@ class Celeste {
     y0 = ypos;
     vx = 0;
     vy = 0;
-    atRest = true; //change later after implementing moving
+    strawberries = 0;
+    atRest = true;
     for (int i = 0; i < 9; i++) {
       celeste_r[i] = loadImage( "celeste_right/Celeste_r0"+ (i+1)+".png");
       celeste_l[i] = loadImage( "celeste_left/Celeste_l0" + (i+1)+".png");
@@ -38,6 +41,7 @@ class Celeste {
     dir = true;
   }
   
+  //Physics of the movement and display image at right location
   void display() {
     xpos += vx;
     ypos += vy;
@@ -58,6 +62,8 @@ class Celeste {
       image(celeste_l[frameCount%17], xpos, ypos);
     }
   }
+  //change the position of celestina to a place
+  //when celestina dies, she respawns at this position
   void set_position(int x, int y) {
     floor = y;
     xpos = x;
@@ -66,9 +72,11 @@ class Celeste {
     x0 = x;
     y0 = y;
   }
+  //change the hight of the floor 
   void set_floor(int y) {
     floor = y;
   }
+  //--- trival functions ------
   void moveLeft() {
     dir = false;
     vx = -8;
@@ -103,6 +111,10 @@ class Celeste {
     xpos = x0;
     ypos = y0;
     floor = default_floor;
+    deaths++;
+  }
+  void addStrawberry() {
+    strawberries++;
   }
   
   int getX() {
