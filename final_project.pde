@@ -40,7 +40,6 @@ void setup() {
   cel = new Celeste(600, 600);
   background = new Background();
   
-  frameRate(20);
   start = true;
   second_screen = false;
   //load all the data
